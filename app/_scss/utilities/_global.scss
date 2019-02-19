@@ -1,0 +1,61 @@
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+.app-root {
+  position: relative;
+  min-width: 320px;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  @media (min-width: 320px) {
+    overflow: hidden;
+  }
+  &.loading {
+    height: 100vh;
+    main {
+      opacity: 0;
+    }
+  }
+  img {
+    max-width: 100%;
+    min-width: 100%;
+  }
+  hr {
+    display: block;
+    border: none;
+    &.small {
+      width: pxrem(15);
+      height: pxrem(1);
+      margin: pxrem(5) 0;
+      @include media-breakpoint-up(md) {
+        width: pxrem(30);
+        margin: pxrem(10) 0;
+      }
+    }
+    &.medium {
+      width: pxrem(80);
+      height: pxrem(2);
+      margin: pxrem(20) 0;
+    }
+  }
+  .iframe {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    iframe {
+      position: absolute;
+      z-index: 111;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+.no-transition {
+  -webkit-transition-property: none !important;
+  -moz-transition-property: none !important;
+  -o-transition-property: none !important;
+  transition-property: none !important;
+}
