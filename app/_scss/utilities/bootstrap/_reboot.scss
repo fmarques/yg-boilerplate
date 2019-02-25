@@ -56,10 +56,6 @@ article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, s
 
 body {
   margin: 0; // 1
-  font-family: $font-family-base;
-  font-size: $font-size-base;
-  font-weight: $font-weight-base;
-  line-height: $line-height-base;
   color: $body-color;
   text-align: left; // 3
   background-color: $body-bg; // 2
@@ -98,7 +94,6 @@ hr {
 // stylelint-disable selector-list-comma-newline-after
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
-  margin-bottom: $headings-margin-bottom;
 }
 // stylelint-enable selector-list-comma-newline-after
 
@@ -108,7 +103,6 @@ h1, h2, h3, h4, h5, h6 {
 // bottom margin to use `rem` units instead of `em`.
 p {
   margin-top: 0;
-  margin-bottom: $paragraph-margin-bottom;
 }
 
 // Abbreviations
@@ -144,10 +138,6 @@ ul ul,
 ol ul,
 ul ol {
   margin-bottom: 0;
-}
-
-dt {
-  font-weight: $dt-font-weight;
 }
 
 dd {
@@ -288,9 +278,6 @@ table {
 }
 
 caption {
-  padding-top: $table-cell-padding;
-  padding-bottom: $table-cell-padding;
-  color: $text-muted;
   text-align: left;
   caption-side: bottom;
 }

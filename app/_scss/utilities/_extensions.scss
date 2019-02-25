@@ -8,33 +8,6 @@
   background-repeat: no-repeat;
   background-size: contain;
 }
-
 %bg-parallax {
   background-attachment: fixed;
-}
-
-
-%grid-padding-left {
-  padding-left: pxrem($grid-padding-xs);
-  @include media-breakpoint-up(sm) {
-    padding-left: pxrem($grid-padding-sm);
-  }
-  @include media-breakpoint-up(md) {
-    padding-left: pxrem($grid-padding-md);
-  }
-  @include media-breakpoint-up(lg) {
-    padding-left: pxrem($grid-padding-lg);
-  }
-}
-%grid-padding-right {
-  padding-right: pxrem($grid-padding-xs);
-  @include media-breakpoint-up(sm) {
-    padding-right: pxrem($grid-padding-sm);
-  }
-  @include media-breakpoint-up(md) {
-    padding-right: pxrem($grid-padding-md);
-  }
-  @include media-breakpoint-up(lg) {
-    padding-right: pxrem($grid-padding-lg);
-  }
 }

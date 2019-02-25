@@ -1,85 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,700');
-@font-face {
-    font-family: 'hurme_bold';
-    src: url('./fonts/hurmegeometricsans4_bold-webfont.woff2') format('woff2'),
-         url('./fonts/hurmegeometricsans4_bold-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
+//@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,700');
 
-@font-face {
-    font-family: 'hurme_light';
-    src: url('./fonts/hurmegeometricsans4_light-webfont.woff2') format('woff2'),
-         url('./fonts/hurmegeometricsans4_light-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-
-$sansSerif: 'Roboto', sans-serif;
+//$sansSerif: 'Roboto', sans-serif;
 $browser-context: 16;
-
 
 $black: #000;
 $white: #fff;
 
-$green: #2e7455;
-$green-light: #438166;
 
-$blue-dark: #2d3236;
-$blue-darker: #1f2429;
-
-$orange: #d14924;
-
-$grey: #b5b5b5;
-$grey-light: #d9d8dd;
-$grey-lighter: #f2f1f6;
-$grey-dark: #aeadad;
-$grey-darker: #232323;
-
-$grid-padding-xs: 15;
-$grid-padding-sm: 15;
-$grid-padding-md: 30;
-$grid-padding-lg: 100;
-
-
-
-.c-green {
-  color: $green;
-}
-.c-orange {
-  &,
-  &:hover,
-  &:active,
-  &:visited {
-    color: $orange;
-  }
-}
-
-.bg-white {
-  background-color: $white;
-}
-.bg-black {
-  background-color: $black;
-}
-.bg-green {
-  background-color: $green;
-}
-.bg-grey-light {
-  background-color: $grey-light;
-}
-.bg-grey-lighter {
-  background-color: $grey-lighter;
-}
-.bg-grey-darker {
-  background-color: $grey-darker;
-}
-.bg-blue-dark {
-  background-color: $blue-dark;
-}
-.bg-blue-darker {
-  background-color: $blue-darker;
-}
 
 
 // content: attr(data-text);
