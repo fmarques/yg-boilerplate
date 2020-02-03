@@ -17,41 +17,64 @@ const watch       = require('gulp-watch');
 const history     = require('connect-history-api-fallback');
 const imagemin    = require('gulp-imagemin');
 
-var paths = {
-  src: { root: 'app' },
-  dist: { root: 'app/dist' },
-  init: function() {
-    this.src.sass        = this.src.root + '/_scss/app.scss';
-    this.src.patterns    = this.src.root + '/_html/**/*.hbs';
-    this.src.javascript  = [this.src.root + '/_scripts/_libs/*.js', this.src.root + '/_scripts/_plugins/*.js', this.src.root + '/_scripts/*.js'];
-    this.src.libs        = this.src.root + '/_scripts/_libs/*.js';
-    this.src.js_plugins  = this.src.root + '/_scripts/_plugins/*.js';
-    this.src.images      = this.src.root + '/_assets/**/*.{jpg,jpeg,svg,png,gif}';
-
-    this.dist.css        = this.dist.root + '/css';
-    this.dist.images     = this.dist.root + '/assets';
-    this.dist.javascript = this.dist.root + '/scripts';
-
-    return this;
+const paths = {
+  src: {
+    root: 'src'
   },
-}.init();
+  dist: {
+    root: 'dist'
+  },
+  styles: {
+    src: './src/_scss/app.scss',
+    dist: './dist/css'
+  },
+  images: {
+    src: './src/_assets/**/*.{jpg,jpeg,svg,png,gif}',
+    dist: './dist/assets'
+  },
+  patterns: {
+    src: './src/_html/**/*.hbs',
+    dist: './dist/'
+  },
+  scripts: {
+    src: './src/_scripts/*.js',
+    libs: './src/_scripts/_libs/*.js',
+    plugins: './src/_scripts/_plugins/*.js',
+    dist: './dist/scripts'
+  }
+};
 
-gulp.task('serve', ['watch'], () => {
+function server(done) {
   browserSync.init({
     server: paths.dist.root,
     open: true,
     notify: false,
-    // Whether to listen on external
-    online: false,
+    online: false
   });
-});
+  done();
+}
 
-gulp.task('styles', () => {
-  gulp.src([paths.src.sass])
+function scripts() {
+  return gulp
+  .src([paths.scripts.libs, paths.scripts.plugins, paths.scripts.src])
+    .pipe(concat('app.js'))
+    .on('error', util.log)
+    .pipe(uglify())
+    .on('error', util.log)
+    .pipe(rename({
+      suffix: '.min',
+    }))
+    .on('error', util.log)
+    .pipe(gulp.dest(paths.scripts.dist))
+    .pipe(browserSync.reload({stream: true}));
+}
+function styles() {
+  return gulp
+    .src([paths.styles.src])
     .pipe(sassGlob())
     .on('error', util.log)
     .pipe(sass({
-      includePaths: ['app/_scss'],
+      includePaths: ['./src/_scss'],
     }))
     .on('error', util.log)
     .pipe(prefixer('last 2 versions'))
@@ -64,27 +87,22 @@ gulp.task('styles', () => {
       suffix: '.min',
     }))
     .on('error', util.log)
-    .pipe(gulp.dest(paths.dist.css))
+    .pipe(gulp.dest(paths.styles.dist))
     .pipe(browserSync.reload({stream: true}));
-});
-
-gulp.task('images', () =>
-  gulp.src([paths.src.images])
+}
+function images() {
+  return gulp
+    .src([paths.images.src])
     .pipe(imagemin())
     .on('error', util.log)
-    .pipe(gulp.dest(paths.dist.images))
+    .pipe(gulp.dest(paths.images.dist))
     .on('error', util.log)
-    .pipe(browserSync.reload({stream: true}))
-);
-
-/*
-* Compile handlebars/partials into html
-*/
-gulp.task('templates', () => {
-
+    .pipe(browserSync.reload({stream: true}));
+}
+function templates() {
   var opts = {
     ignorePartials: true,
-    batch: ['./app/_html'],
+    batch: ['./src/_html'],
     helpers: {
       compare: function(lvalue, rvalue, options) {
         if (arguments.length < 3) {
@@ -138,7 +156,8 @@ gulp.task('templates', () => {
     }
   };
 
-  gulp.src([paths.src.root + '/_html/templates/*.hbs'])
+  return gulp
+    .src(['./src/_html/templates/*.hbs'])
     .pipe(handlebars(null, opts))
     .on('error', util.log)
     .pipe(rename({
@@ -147,31 +166,21 @@ gulp.task('templates', () => {
     .on('error', util.log)
     .pipe(gulp.dest(paths.dist.root))
     .pipe(browserSync.reload({stream: true}));
-});
+}
 
-/*
-* Bundle all javascript files
-*/
-gulp.task('scripts', () => {
-  gulp.src(paths.src.javascript)
-    .pipe(concat('app.js'))
-    .on('error', util.log)
-    .pipe(uglify())
-    .on('error', util.log)
-    .pipe(rename({
-      suffix: '.min',
-    }))
-    .on('error', util.log)
-    .pipe(gulp.dest(paths.dist.javascript))
-    .pipe(browserSync.reload({stream: true}));
-});
+function watchFiles() {
+  gulp.watch(paths.patterns.src, templates);
+  gulp.watch(paths.scripts.src, scripts);
+  gulp.watch('./src/_scss/**/*.scss', styles);
+  gulp.watch(paths.images.src, images);
+}
 
-gulp.task('watch', () => {
-  gulp.watch('app/_scss/**/*.scss', ['styles']);
-  gulp.watch(paths.src.javascript, ['scripts']);
-  gulp.watch(paths.src.images, ['images']);
-  gulp.watch(paths.src.patterns, ['templates']);
-});
+const watchAll = gulp.parallel(watchFiles, server);
 
-
-gulp.task('default', ['serve', 'styles', 'scripts', 'templates','images']);
+// export tasks
+exports.images = images;
+exports.styles = styles;
+exports.scripts = scripts;
+exports.templates = templates;
+exports.watch = watchAll;
+exports.default = watchAll;
